@@ -8,24 +8,20 @@ app = Flask(__name__)
 @app.route('/')
 def index():
   conn = get_db_connection()
-  WOMANIZER_YO = conn.execute("SELECT * FROM women").fetchall()
+  WOMANIZER_YO = conn.execute("SELECT * FROM proj").fetchall()
   conn.close()
   return render_template('index.html')
 
-@app.route("/women")
-def a():
-  return render_template("women.html")
-
-@app.route("/men")
-def b():
-  return render_template("men.html")
+@app.route("/projects")
+def projects():
+  return render_template("projects.html")
 
 @app.route('/woman/<woman_id>')
 def show_woman(woman_id):
   conn = get_db_connection
-  woman = conn.execute("SELECT woman.*, users.name AS user_name FROM woman LEFT JOIN users WHERE woman.user_id = users.id AND woman.id = ?",(woman_id)).fetchone()
+  woman = conn.execute("SELECT proj.*, users.name AS user_name FROM proj LEFT JOIN users WHERE proj.user_id = users.id AND woman.id = ?",(woman_id)).fetchone()
   conn.close()
-  return render_template('show_woman.html', woman=woman, WOMANIZER_YO=WOMANIZER_YO)
+  return render_template('show_proj.html', proj=proj, WOMANIZER_YO=WOMANIZER_YO)
 
 @app.errorhandler(404)
 def page_not_found(e):
